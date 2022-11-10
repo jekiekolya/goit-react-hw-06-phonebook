@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact, getContacts } from 'redux/contactsSlice';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -10,7 +10,7 @@ import Button from '../Button';
 import { Form } from './ContactForm.styled';
 
 function FormAddContact() {
-  const contacts = useSelector(state => state.contacts);
+  const { contacts } = useSelector(getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
