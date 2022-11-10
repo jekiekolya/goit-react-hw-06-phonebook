@@ -1,15 +1,20 @@
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import InputField from '../InputField';
 import Button from '../Button';
 
 import { Form } from './ContactForm.styled';
-import { useState } from 'react';
 
-function FormAddContact({ onSubmit, contacts }) {
+function FormAddContact() {
+  const contacts = useSelector(state => state.contacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
 
   const handleChangeName = e => {
     setName(e.currentTarget.value);
@@ -25,8 +30,8 @@ function FormAddContact({ onSubmit, contacts }) {
     const statusValidation = checkEqualValue.call(contacts, name);
     if (statusValidation === 'alert') return;
 
-    onSubmit({ name, number });
-
+    dispatch(addContact({ name, number }));
+    Notify.success(`${name} successfully added`);
     // reset values in form
     resetForm('', '');
   };
@@ -66,17 +71,6 @@ function FormAddContact({ onSubmit, contacts }) {
     </Form>
   );
 }
-
-FormAddContact.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
 
 function checkEqualValue(name) {
   const equalValue = this.filter(item => {

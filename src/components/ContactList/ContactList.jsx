@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   ContactsList,
   ContactItem,
@@ -10,19 +9,27 @@ import Button from '../Button';
 
 import { Box } from '../Box';
 import { useMemo, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
 
-function ContactList({ contacts, filterValue, onDeleteContact }) {
-  const triggerToSetLocalStorage = useRef(true);
+function ContactList() {
+  const contacts = useSelector(state => state.contacts);
+  const filterValue = useSelector(state => state.filter);
+  const dispatch = useDispatch();
+  const deleteContactReducer = contactId => {
+    dispatch(deleteContact(contactId));
+  };
 
-  useMemo(() => {
-    console.log(triggerToSetLocalStorage.current);
-    if (triggerToSetLocalStorage.current) {
-      triggerToSetLocalStorage.current = false;
-      return;
-    }
+  // const triggerToSetLocalStorage = useRef(true);
 
-    localStorage.setItem('listContacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useMemo(() => {
+  //   if (triggerToSetLocalStorage.current) {
+  //     triggerToSetLocalStorage.current = false;
+  //     return;
+  //   }
+
+  //   localStorage.setItem('listContacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const filterContacts = contacts.filter(item => {
     return item.name.toLocaleLowerCase().includes(filterValue);
@@ -41,7 +48,7 @@ function ContactList({ contacts, filterValue, onDeleteContact }) {
               <Button
                 type="button"
                 name="Delete"
-                onClick={() => onDeleteContact(contact.id)}
+                onClick={() => deleteContactReducer(contact.id)}
               />
             </ContactItem>
           );
@@ -50,17 +57,5 @@ function ContactList({ contacts, filterValue, onDeleteContact }) {
     </Box>
   );
 }
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  filterValue: PropTypes.string.isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
-};
 
 export default ContactList;

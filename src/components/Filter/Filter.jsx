@@ -1,18 +1,22 @@
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setFilter } from 'redux/filterSlice';
 
 import InputField from '../InputField';
 
-const Filter = ({ handlerFilterList }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+
+  const handlerFilterList = e => {
+    const inputValue = e.target.value.toLocaleLowerCase();
+    dispatch(setFilter(inputValue));
+  };
+
   return (
     <InputField
       nameLabel="Find contacts by name"
       onChange={handlerFilterList}
     />
   );
-};
-
-Filter.propTypes = {
-  handlerFilterList: PropTypes.func.isRequired,
 };
 
 export default Filter;
