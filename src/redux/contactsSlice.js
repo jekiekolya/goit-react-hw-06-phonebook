@@ -3,11 +3,11 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { nanoid } from 'nanoid';
 
-const initialContactsState = [];
+const initialContactsState = { contacts: [] };
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { contacts: initialContactsState },
+  initialState: initialContactsState,
   reducers: {
     addContact: {
       reducer(state, action) {
