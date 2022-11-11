@@ -10,7 +10,7 @@ import Button from '../Button';
 import { Form } from './ContactForm.styled';
 
 function FormAddContact() {
-  const { contacts } = useSelector(getContacts);
+  const contacts = useSelector(getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 

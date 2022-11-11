@@ -14,7 +14,7 @@ import Button from '../Button';
 import { Box } from '../Box';
 
 function ContactList() {
-  const { contacts } = useSelector(getContacts);
+  const contacts = useSelector(getContacts);
   const filterValue = useSelector(getFilter);
   const dispatch = useDispatch();
   const deleteContactReducer = contactId => {
